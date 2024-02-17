@@ -1,0 +1,101 @@
+Gavriliu Andrei - 313CB 
+
+tema2.c:-eliberareMemorie: functie ce elibereaza vectorul de categorii,fiecare serial din categorie,cozile si inchide fisierul;
+        -main: -declaram v,vectorul in care gasim cele 4 categorii de seriale;
+               -declaram coada si cele doua stive pe care le initializam cu NULL;
+               -declaram doi vectori infilename si outfilename in care vom stoca numele fisierelor
+               pe care le citim din linia de comanda;
+               -alocam linia si deschidem fisierul;verificam daca acest lucru a reusit;
+               -cat timp citim linia din fisier,spargem linia si aflam operatia ce va fi facuta;
+               -intram pe if-ul corespunzator operatiei;
+                -add:-stocam ID,nume,rating si nr_sezoane in niste variabile folosind strtok;
+                     -restul datelor de pe linie le punem intr-un vector;
+                     -alocam o variabila de tip serial(structura) si stocam datele citite pe campurile corespunzatoare;
+                     -intoarcem pozitia pe care se gaseste serialul in poz,folosind functia add;
+                     -afisam mesajul corespunzator;
+                -add_sez:-stocam nume si nr_episoade in niste variabile folosind strtok;
+                     -restul datelor de pe linie le punem intr-un vector;
+                     -alocam o variabila de tip sezon(structura) si stocam nr_episoade pe campul corespunzator;
+                     -apelam functia add_sez;verificam daca intoarce 1(succes) si afisam mesajul corespunzator;
+                -add_top:-stocam poz,nume,rating si nr_sezoane in niste variabile folosind strtok;
+                         -restul datelor de pe linie le punem intr-un vector;
+                         -alocam o variabila de tip serial(structura) si stocam datele citite pe campurile corespunzatoare;
+                         -apelam functia add_top;
+                         -afisam categoria Top10
+                -later:-stocam numele serialului folosind strtok;
+                       -initializam coada watch_later folosind functia later
+                       -verificam validitatea cozii,aflam pozitita serialului si afisam mesajul corespunzator;
+                -watch:-stocam numele si durata folosind strtok;
+                       -initializam coada watch_later folosind functia later
+                       -initializam coada currently_watching folosind functia watch;
+                       -daca serialul a fost vizionat complet afisam mesajul corespunzator;
+                -show:-stocam categoria folosind strtok;
+                      -initializam lg in functie de categoria corespunzatoare;
+                      -afisam categoria;
+
+coada.h:-declaram structura coada,dar si structurile specifice pentru episod,sezon,serial si functiile folosite;
+
+lista.c:compara:-face cast celor doua elemente primite de la void la TSerial
+                -intoarce 0 in caz de egalitate,altfel 1
+        
+        InsLG:-functie ce insereaza un element in lista
+              -daca lista nu contine elemente,elementul inserat va fi primul(se va intra pe else)
+              -daca lista are mai multe elemente,intram pe prima conditie de if
+              -inserarea se face la finalul listei
+        
+        InserareSerial:-functie ce insereaza un serial in lista de seriale;
+                       -daca lista e nula serialul va avea pozitia 1;
+                       -parcurgem lista si cautam locul de inserare;
+                       -pastram si elementul anterior;
+                       -daca trebuie inserat la inceput intram pe if,altfel pe else;intoarcem capul listei;
+                       -sau inserarea se face la final;intoarcem capul listei;
+                       -cand facem inserarea incrementam si pozitia;
+        
+        InserareSerial:-functie ce insereaza un serial in lista top;
+                       -daca lista e nula serialul va fi primul inserat;
+                       -parcurgem lista si cautam locul de inserare;
+                       -pastram si elementul anterior;
+                       -facem inserarea la inceput,mijloc sau sfarsit;intoarcem capul listei;
+        
+        InserareStiva:-functie ce insereaza un element in stiva;
+                      -adaugam in capul stivei;
+        
+        AjustareCategorieTop:-parcurgem lista top si numerotam elementele de la 1 la 10;
+                             -daca avem 10 elemente in top il salvam pe ultimul pentru ca apoi sa il eliminam; 
+
+        add_sez:-functie ce adauga un nou sezon intr-un serial;
+                -cautam serialul in cele patru categorii;
+                -cand il gasim inseram sezonul in serial;inseram episoadele in sezon;
+
+        add:-identificam in ce categorie se afla serialul si salvam inceputul listei respective;
+            -verificam ca serialul sa nu fie deja inserat;
+            -inseram serialul in lista;
+            -adaugam toate sezoanele in serial;
+            -intoarcem pozitia pe care se gaseste serialul in lista;
+            
+        add_top:-inseram serialul in lista;
+                -inseram sezoanele si serialele in lista;
+                -ajustam categoria top;
+        
+        later:-cautam serialul in cele 4 categorii;
+              -inseram serialul in watch_later;
+              -pastram si precedentul pentru a sterge elementul din capul listei;
+              -intoarcem watch_later;
+        
+        getPosition:-functie ce intoarce pozitia serialului in lista;parcurgem lista incrementam cnt pe care o sa il intoarcem;
+
+        watch:-cautam serialul in stiva currently_watching;
+              -cautam serialul in watch_later;cand il gasim il inseram in currently_watching;
+              -pastram si precedentul pentru a putea itera;
+              -urmeaza sa vizionam serialul;parcurgem fiecare episod al serialului;
+              -calculam restul ce a mai ramas de vizionat;daca durata e mai mare decat acest rest inseamna ca am vizionat complet serialul;altfel nu;
+              -vizionat_complet devine 0 sau 1 in functie de caz;
+              -daca serialul a fost vizionat complet,il mutam in history;
+              -functia va intoarce currently_watching;
+        
+        eliberareCategorie:-functie ce elibereaza o categorie de seriale;cat timp exista seriale diferite de NULL le eliberam;
+
+        eliberareSerial:-functie ce elibereaza informatia dintr-u serial;eliberam toate sezoanele,apoi ceilalti pointeri;
+
+        eliberareEpisod:-functie ce elibereaza un episod;
+
